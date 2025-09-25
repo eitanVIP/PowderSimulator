@@ -3,8 +3,8 @@ project(PowderSimulator C)
 
 set(CMAKE_C_STANDARD 23)
 
-add_executable(PowderSimulator main.c
-        PowderSimulator.c
-        PowderSimulator.h
-        Window.c
-        Window.h)
+add_executable(PowderSimulator src/main.c
+        src/PowderSimulator.c
+        include/PowderSimulator.h
+        src/Window.c
+        include/Window.h)

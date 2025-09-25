@@ -2,9 +2,9 @@
 // Created by eitan on 9/25/2025.
 //
 
-#include "PowderSimulator.h"
+#include "../include/PowderSimulator.h"
 #include <stdio.h>
-#include "Window.h"
+#include "../include/Window.h"
 
 static unsigned char** cells;
 static int width, height;

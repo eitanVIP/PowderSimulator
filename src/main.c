@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <stdio.h>
-#include "PowderSimulator.h"
-#include "Window.h"
+#include "../include/PowderSimulator.h"
+#include "../include/Window.h"
 #include <math.h>
 
 double time() {
