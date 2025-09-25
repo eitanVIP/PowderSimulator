@@ -5,6 +5,7 @@
 #include "../include/PowderSimulator.h"
 #include <stdio.h>
 #include "../include/Window.h"
+#include <stdbool.h>
 
 static unsigned char** cells;
 static int width, height;
