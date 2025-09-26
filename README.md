@@ -3,6 +3,7 @@ A cellular automata powder simulator in C and windows.
 <br />Used Windows api for creating a window.
 <br />Can simulate sand, water, stone and metal.
 
+## Materials
 ### sand
 Can fall either down, left down, or right down.
 
@@ -15,6 +16,10 @@ Can only fall down.
 
 ### metal
 Can't move.
+
+## Video Example
+![PowderSimGif](https://github.com/user-attachments/assets/9cfb2ca9-2b0b-47a4-a1ee-126503004abe)
+
 
 ## How To Play
 - Left click- put material
