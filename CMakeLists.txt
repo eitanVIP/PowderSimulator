@@ -7,7 +7,9 @@ add_executable(PowderSimulator src/main.c
         src/PowderSimulator.c
         include/PowderSimulator.h
         src/Window.c
-        include/Window.h)
+        include/Window.h
+        src/Util.c
+        include/Util.h)
 
 set_target_properties(PowderSimulator PROPERTIES
         WIN32_EXECUTABLE TRUE

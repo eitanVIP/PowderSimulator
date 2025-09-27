@@ -4,9 +4,12 @@
 
 #include "../include/PowderSimulator.h"
 #include <stdio.h>
-#include "../include/Window.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include "../include/Window.h"
+#include "../include/Util.h"
+
+#define TYPES_COUNT 6
 
 typedef struct CellValue {
     uint8_t type;
@@ -16,7 +19,7 @@ typedef struct CellValue {
 
 static uint8_t** cells;
 static int width, height;
-static COLORREF type_to_color[5] = { RGB(25, 25, 25), RGB(125, 125, 62.5), RGB(50, 75, 150), RGB(60, 60, 60), RGB(10, 10, 10) };
+static COLORREF type_to_color[TYPES_COUNT] = { RGB(25, 25, 25), RGB(125, 125, 62.5), RGB(50, 75, 150), RGB(60, 60, 60), RGB(10, 10, 10), RGB(182, 175, 225) };
 static int selected_type = 1;
 static bool rightClicked = false;
 static int radius = 1;
@@ -63,8 +66,17 @@ void setCellValues(uint8_t** c, int x, int y, uint8_t type, uint8_t checked, uin
         c[y][x] = ((checked & 1) << 7) | ((moved & 1) << 6) | (type & 0b00111111);
 }
 
+void shuffle(POINT* arr, int n) {
+    for (int i = n - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        POINT tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+}
+
 void draw() {
-    window_drawBackground(RGB(25, 25, 25));
+    window_drawBackground(type_to_color[0]);
 
     double cell_width = window_getSize().cx / (double)width;
     double cell_height = window_getSize().cy / (double)height;
@@ -88,7 +100,9 @@ void simulator_start(int width_p, int height_p) {
         }
     }
 
-    window_preFillBrushes(type_to_color, 5);
+    window_preFillBrushes(type_to_color, TYPES_COUNT);
+
+    srand(time());
 }
 
 bool step_cell(int x, int y, uint8_t** cells, uint8_t** new_cells) {
@@ -130,6 +144,18 @@ bool step_cell(int x, int y, uint8_t** cells, uint8_t** new_cells) {
             break;
 
         case 4: // Metal
+            break;
+
+        case 5: // Gas
+            positions[0] = (POINT){ x, y - 1 };
+            positions[1] = (POINT){ x - 1, y - 1 };
+            positions[2] = (POINT){ x + 1, y - 1 };
+            positions[3] = (POINT){ x - 1, y };
+            positions[4] = (POINT){ x + 1, y };
+            pos_count = 5;
+
+            shuffle(positions, 3);
+            shuffle(&positions[3], 2);
             break;
 
         default:
@@ -196,7 +222,7 @@ void simulator_update() {
 
     if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
         if (!rightClicked) {
-            selected_type = selected_type % 4 + 1;
+            selected_type = selected_type % (TYPES_COUNT - 1) + 1;
             rightClicked = true;
         }
     } else {
