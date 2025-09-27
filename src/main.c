@@ -25,7 +25,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     MSG Msg;
     BOOL running = TRUE;
-    int FPS = 120;
+    double FPS = 0.5;
     double deltaTime = 0;
     double start;
 
