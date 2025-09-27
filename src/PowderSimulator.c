@@ -60,8 +60,7 @@ CellValue_t getCellValues(uint8_t** c, int x, int y) {
 
 void setCellValues(uint8_t** c, int x, int y, uint8_t type, uint8_t checked, uint8_t moved) {
     if (x >= 0 && x < width && y >= 0 && y < height)
-        c[y][x] = ((checked << 7) & 1) | ((moved << 6) & 1) | (type & 0b00111111);
-    printf("Shit: %x\n", c[y][x]);
+        c[y][x] = ((checked & 1) << 7) | ((moved & 1) << 6) | (type & 0b00111111);
 }
 
 void draw() {
@@ -88,9 +87,6 @@ void simulator_start(int width_p, int height_p) {
             setCell(cells, x, y, 0);
         }
     }
-    setCell(cells, 100, 100, 1);
-    setCell(cells, 100, 101, 1);
-    setCell(cells, 100, 102, 1);
 
     window_preFillBrushes(type_to_color, 5);
 }
@@ -99,10 +95,6 @@ bool step_cell(int x, int y, uint8_t** cells, uint8_t** new_cells) {
     POINT positions[10];
     int pos_count = 0;
     CellValue_t cell_value = getCellValues(cells, x, y);
-
-    if (cell_value.type == 1) {
-        asm volatile("nop");
-    }
 
     if (cell_value.type == 0) {
         return false;
@@ -134,6 +126,7 @@ bool step_cell(int x, int y, uint8_t** cells, uint8_t** new_cells) {
 
         case 3: // Stone
             positions[0] = (POINT){ x, y + 1 };
+            pos_count = 1;
             break;
 
         case 4: // Metal
